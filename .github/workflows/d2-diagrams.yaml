@@ -6,23 +6,24 @@ on:
 jobs:
   generate-diagram:
     runs-on: ubuntu-latest
-    permissions:                
-     contents: write          
-     pull-requests: write      
-    env: 
+    permissions:
+      contents: write
+      pull-requests: write
+    env:
       CI_COMMIT_MESSAGE: Update generated diagrams with D2
       CI_COMMIT_AUTHOR: D2 Diagram Creator
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
       with:
-        fetch-depth: 0 
-        token: ${{ secrets.GITHUB_TOKEN }} 
+        fetch-depth: 0
+        token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Git Global Config
       run: |
-       git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
-       git config --global user.email "actions@github.com"
+        git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
+        git config --global user.email "actions@github.com"
 
     - name: Download and install D2 precompiled binary
       run: |
@@ -42,21 +43,23 @@ jobs:
       run: |
         # Get current timestamp
         timestamp=$(date +"%Y-%m-%d-%H-%M-%S")
+        
         # Find all .d2 files in the repo and generate corresponding .svg or .png files
         mkdir -p output/d2-diagrams/
         for file in $(find . -name '*.d2'); do
           # Extract the base file name without the extension
           base_name=$(basename "$file" .d2)
           # Generate the diagram in SVG format and store it in the output directory
-          $HOME/go/bin/d2 "$file" "output/d2-diagrams/${base_name}-$timestamp.svg"
+          /usr/local/bin/d2 "$file" "output/d2-diagrams/${base_name}-$timestamp.svg"
         done
 
     - name: List generated files (for debugging)
       run: ls -al output/d2-diagrams/
 
     - name: Add output files & Status
-      run: git add output/
-           git status
+      run: |
+        git add output/
+        git status
 
     - name: Commit and Push generated diagrams to repository
       run: |
