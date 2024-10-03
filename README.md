@@ -1,11 +1,6 @@
 # Generate Diagrams in Github Action
 
 
-## Actual Output
-
-![](output/output-2024-10-03-16-30-19.png.png)
-
-
 ## Directory Structure
 ```
 /generate-diagrams
@@ -19,6 +14,9 @@
 │   └── generatediagram.py
 ```
 
+## Actual Output
+
+![](output/output-2024-10-03-16-30-19.png.png)
 
 
 
