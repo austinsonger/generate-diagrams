@@ -41,7 +41,7 @@ jobs:
         mkdir -p output/aws-diagram-as-code/
     
         # Run the awsdac tool to generate a diagram from the YAML file
-        $HOME/go/bin/awsdac aws-diagram-as-code.yaml -o output/aws-diagram-as-code/generated-diagram-$timestamp.png
+        $HOME/go/bin/awsdac setup/aws-diagram-as-code.yaml -o output/aws-diagram-as-code/generated-diagram-$timestamp.png
 
     - name: List generated files (for debugging)
       run: ls -al output/aws-diagram-as-code/
