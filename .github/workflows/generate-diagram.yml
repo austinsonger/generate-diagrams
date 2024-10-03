@@ -42,18 +42,31 @@ jobs:
     - name: Generate diagram
       run: |
         python scripts/generatediagram.py
-
+    
     - name: List generated files (for debugging)
-      run: ls -al
+      run: ls -al output/
 
-    - name: Commit and Push changes
+    - name: Add output files
+      run: git add output/
+
+    - name: Check Git status
+      run: git status
+
+    - name: Commit changes
       run: |
-        git add -A
-        git commit --verbose -a -m "${{ env.CI_COMMIT_MESSAGE }}"
-        git status
-        git fetch origin
-        git rebase --strategy-option=theirs origin/main --verbose
-        git push origin main --verbose
+        git commit --verbose -a -m "${{ env.CI_COMMIT_MESSAGE }}" || echo "No changes to commit"
+
+    - name: Force push changes to origin/main
+      run: git push origin main --force --verbose
+      
+#    - name: Commit and Push changes
+#      run: |
+#        git add -A
+#        git commit --verbose -a -m "${{ env.CI_COMMIT_MESSAGE }}"
+#        git status
+#        git fetch origin
+#        git rebase --strategy-option=theirs origin/main --verbose
+#        git push origin main --verbose
 
     - name: Push changes
       uses: ad-m/github-push-action@master
