@@ -1,4 +1,4 @@
-from diagrams import Diagram
+from diagrams import Diagram, Cluster
 from diagrams.aws.compute import EC2
 from diagrams.aws.network import ELB
 from diagrams.aws.network import VPC, PrivateSubnet, PublicSubnet
