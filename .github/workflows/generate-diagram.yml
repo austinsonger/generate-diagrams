@@ -58,15 +58,6 @@ jobs:
 
     - name: Force push changes to origin/main
       run: git push origin main --force --verbose
-      
-#    - name: Commit and Push changes
-#      run: |
-#        git add -A
-#        git commit --verbose -a -m "${{ env.CI_COMMIT_MESSAGE }}"
-#        git status
-#        git fetch origin
-#        git rebase --strategy-option=theirs origin/main --verbose
-#        git push origin main --verbose
 
     - name: Push changes
       uses: ad-m/github-push-action@master
