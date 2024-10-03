@@ -42,7 +42,24 @@ jobs:
     - name: Generate diagram
       run: |
         python scripts/generatediagram.py
+
+    - name: Set up Go environment
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.21'  # AWSDAC requires Go 1.21 or higher
+
+    - name: Install awsdac CLI tool
+      run: |
+        go install github.com/awslabs/diagram-as-code/cmd/awsdac@latest
+
+    - name: Generate diagram from YAML
+      run: |        
+        # Generate current date and time in YYYY-MM-DD-HH-MM-SS format
+        timestamp=$(date +"%Y-%m-%d-%H-%M-%S")
     
+        # Run the awsdac tool to generate a diagram from the YAML file
+        $HOME/go/bin/awsdac aws-diagram-as-code.yaml -o output/generated-diagram.png
+   
     - name: List generated files (for debugging)
       run: ls -al output/
 
