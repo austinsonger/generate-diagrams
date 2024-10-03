@@ -24,13 +24,13 @@ jobs:
        git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
        git config --global user.email "actions@github.com"
 
-    - name: Install D2 CLI tool
+    - name: Download and install D2 precompiled binary
       run: |
-        # Download the latest D2 precompiled binary from GitHub releases
-        curl -L https://github.com/terrastruct/d2/releases/download/v0.6.7/d2-linux-amd64.tar.gz -o d2.tar.gz
+        # Download the latest D2 binary for Linux
+        curl -L https://github.com/terrastruct/d2/releases/download/v0.6.7/d2-linux-amd64 -o d2
         
-        # Extract the D2 binary
-        tar -xzf d2.tar.gz
+        # Make it executable
+        chmod +x d2
         
         # Move the binary to /usr/local/bin to make it available in the PATH
         sudo mv d2 /usr/local/bin/d2
