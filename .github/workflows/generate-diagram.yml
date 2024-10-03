@@ -37,6 +37,7 @@ jobs:
     - name: Generate diagram
       run: |
         python scripts/generatediagram.py  # Fixed path
+        git add -A
 
     - name: List generated files (for debugging)
       run: ls -al
