@@ -1,4 +1,4 @@
-name: Generate Diagrams using D2
+name: Generate D2 Diagrams 
 
 on:
   workflow_dispatch:
