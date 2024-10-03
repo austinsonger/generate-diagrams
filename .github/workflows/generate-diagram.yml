@@ -1,0 +1,60 @@
+name: Generate Diagram
+
+on:
+  workflow_dispatch:
+
+jobs:
+  generate-diagram:
+    runs-on: ubuntu-latest
+    permissions:                
+     contents: write          
+     pull-requests: write      
+    env: 
+      CI_COMMIT_MESSAGE: Update generated diagram
+      CI_COMMIT_AUTHOR: Diagram Creator
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0 
+        token: ${{ secrets.GITHUB_TOKEN }}  # Use the default GitHub token
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+
+    - name: Install system dependencies (Graphviz)
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y graphviz
+
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install diagrams graphviz
+
+    - name: Generate diagram
+      run: |
+        python scripts/generatediagram.py  # Fixed path
+
+    - name: List generated files (for debugging)
+      run: ls -al
+
+    - name: Commit and Push changes
+      run: |
+       git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
+       git config --global user.email "actions@github.com"
+       git add .
+       git commit --verbose -m "${{ env.CI_COMMIT_MESSAGE }}"
+       git status
+       git push --verbose       
+       git fetch origin
+       git rebase --strategy-option=theirs origin/main --verbose
+
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        force: true
+        ref: ${{ github.head_ref }}
+        fetch-depth: 0
