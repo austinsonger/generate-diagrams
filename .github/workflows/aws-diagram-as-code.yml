@@ -1,4 +1,4 @@
-name: Generate Diagram using AWS Diagram-as-Code
+name: Generate AWS DaC Diagrams
 
 on:
   workflow_dispatch:
