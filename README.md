@@ -5,7 +5,7 @@
 - [Actual Output](#actual-output)
 
 ## Directory Structure
-```
+```yaml
 /generate-diagrams
 ├── README.md
 ├── .github/workflows/generate-diagram.yml
@@ -17,7 +17,7 @@
 ```
 
 ## Script
-```
+```bash
 from diagrams import Cluster, Diagram
 from diagrams.aws.compute import ECS, EKS, Lambda
 from diagrams.aws.database import Redshift
