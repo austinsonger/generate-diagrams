@@ -1,7 +1,1 @@
-[submodule "base-templates"]
-	path = base-templates
-	url = https://github.com/austinsonger/base-templates.git
-[submodule "bash-tools"]
-	path = bash-tools
-	url = https://github.com/austinsonger/DevOps-Bash-tools.git
 
