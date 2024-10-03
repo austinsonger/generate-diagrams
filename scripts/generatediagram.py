@@ -11,7 +11,7 @@ current_datetime = datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
 
 # Define the output directory and filename
 output_directory = 'output'
-output_file = f"{output_directory}/output-{current_datetime}.png"
+output_file = f"{output_directory}/mingrammer/output-{current_datetime}.png"
 
 # Create the 'output' directory if it doesn't exist
 if not os.path.exists(output_directory):
