@@ -5,7 +5,6 @@ from diagrams.aws.network import VPC, PrivateSubnet, PublicSubnet
 from diagrams.aws.security import Shield, WAF
 from diagrams.generic.network import Subnet
 from diagrams.onprem.client import Users
-from diagrams.onprem.network import Firewall
 from diagrams.aws.database import RDS
 import datetime
 import os
