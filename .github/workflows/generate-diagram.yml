@@ -45,11 +45,11 @@ jobs:
       run: |
        git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
        git config --global user.email "actions@github.com"
+       git fetch origin
        git add .
        git commit --verbose -m "${{ env.CI_COMMIT_MESSAGE }}"
        git status
-       # git push --verbose       
-       git fetch origin
+       git push --verbose       
        git rebase --strategy-option=theirs origin/main --verbose
 
     - name: Push changes
