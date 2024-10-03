@@ -1,4 +1,4 @@
-# generate-diagrams
+# Generate Diagrams in Github Action
 
 
 ## Actual Output
