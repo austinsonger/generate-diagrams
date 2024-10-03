@@ -57,11 +57,23 @@ jobs:
       - name: D2 fmt
         run: make fmt
 
-      - name: Check diff
+#      - name: Check diff
+#        run: |
+#          if ! git diff --quiet; then
+#            echo "There are formatting changes:"
+#            echo
+#            git diff
+#            exit 1
+#          fi
+
+      - name: Check for formatting changes
         run: |
           if ! git diff --quiet; then
             echo "There are formatting changes:"
-            echo
             git diff
-            exit 1
+            git config user.name "GitHub Actions"
+            git config user.email "actions@github.com"
+            git add .
+            git commit -m "Auto-format code during GitHub Actions run"
+            git push
           fi
