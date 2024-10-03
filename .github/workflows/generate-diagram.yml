@@ -54,9 +54,8 @@ jobs:
 
     - name: Generate diagram from YAML
       run: |        
-        # Generate current date and time in YYYY-MM-DD-HH-MM-SS format
+        # Generate current date and time & Create Directory
         timestamp=$(date +"%Y-%m-%d-%H-%M-%S")
-
         mkdir -p output/aws-diagram-as-code/
     
         # Run the awsdac tool to generate a diagram from the YAML file
@@ -65,18 +64,14 @@ jobs:
     - name: List generated files (for debugging)
       run: ls -al output/
 
-    - name: Add output files
+    - name: Add output files & Status
       run: git add output/
+           git status
 
-    - name: Check Git status
-      run: git status
-
-    - name: Commit changes
+    - name: Commit changes & Force push changes to origin/main
       run: |
         git commit --verbose -a -m "${{ env.CI_COMMIT_MESSAGE }}" || echo "No changes to commit"
-
-    - name: Force push changes to origin/main
-      run: git push origin main --force --verbose
+        git push origin main --force --verbose
 
     - name: Push changes
       uses: ad-m/github-push-action@master
