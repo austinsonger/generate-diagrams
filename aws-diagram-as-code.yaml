@@ -2,108 +2,79 @@ Diagram:
   DefinitionFiles:
     - Type: URL
       Url: "https://raw.githubusercontent.com/awslabs/diagram-as-code/main/definitions/definition-for-aws-icons-light.yaml"
-  
+
   Resources:
     Canvas:
       Type: AWS::Diagram::Canvas
       Direction: vertical
       Children:
-        - EventSource
-        - EventFlows
-
-    # Event Source (EKS)
-    EventSource:
-      Type: AWS::EKS::Cluster
-      Preset: Kubernetes Cluster
-
-    # Event Flows Cluster
-    EventFlows:
-      Type: AWS::Diagram::ResourceGroup
+        - AWSCloud
+        - User
+    AWSCloud:
+      Type: AWS::Diagram::Cloud
+      Direction: vertical
+      Preset: AWSCloudNoLogo
+      Align: center
+      Children:
+        - VPC
+        - IGW
+    # VPC
+    VPC:
+      Type: AWS::EC2::VPC
       Direction: vertical
       Children:
-        - EventWorkers
-        - EventQueue
-        - Processing
-
-    # Event Workers (ECS Cluster)
-    EventWorkers:
-      Type: AWS::Diagram::Cluster
-      Preset: ResourceGroup
+        - VPCPublicStack
+        - ALB
+    VPCPublicStack:
+      Type: AWS::Diagram::HorizontalStack
       Children:
-        - Worker1
-        - Worker2
-        - Worker3
-
-    Worker1:
-      Type: AWS::ECS::Service
-      Preset: ECS Container Service
-
-    Worker2:
-      Type: AWS::ECS::Service
-      Preset: ECS Container Service
-
-    Worker3:
-      Type: AWS::ECS::Service
-      Preset: ECS Container Service
-
-    # Event Queue (SQS)
-    EventQueue:
-      Type: AWS::SQS::Queue
-      Preset: SQS Queue
-
-    # Processing (Lambda Handlers)
-    Processing:
-      Type: AWS::Diagram::ResourceGroup
-      Direction: vertical
+        - VPCPublicSubnet1
+        - VPCPublicSubnet2
+    VPCPublicSubnet1:
+      Type: AWS::EC2::Subnet
+      Preset: PublicSubnet
       Children:
-        - LambdaProc1
-        - LambdaProc2
-        - LambdaProc3
-
-    LambdaProc1:
-      Type: AWS::Lambda::Function
-      Preset: Lambda Function
-
-    LambdaProc2:
-      Type: AWS::Lambda::Function
-      Preset: Lambda Function
-
-    LambdaProc3:
-      Type: AWS::Lambda::Function
-      Preset: Lambda Function
-
-    # Storage (S3 and Redshift)
-    EventsStore:
-      Type: AWS::S3::Bucket
-      Preset: S3 Bucket
-
-    AnalyticsDW:
-      Type: AWS::Redshift::Cluster
-      Preset: Redshift Cluster
+        - VPCPublicSubnet1Instance
+    VPCPublicSubnet1Instance:
+      Type: AWS::EC2::Instance
+    VPCPublicSubnet2:
+      Type: AWS::EC2::Subnet
+      Preset: PublicSubnet
+      Children:
+        - VPCPublicSubnet2Instance
+    VPCPublicSubnet2Instance:
+      Type: AWS::EC2::Instance
+    ALB:
+      Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+      Preset: Application Load Balancer
+    IGW:
+      Type: AWS::EC2::InternetGateway
+    User:
+      Type: AWS::Diagram::Resource
+      Preset: User
 
   Links:
-    # Define connections in the architecture
-    - Source: EventSource
-      Target: Worker1
+    - Source: ALB
+      SourcePosition: NNW
+      Target: VPCPublicSubnet1Instance
+      TargetPosition: SSE
       TargetArrowHead:
         Type: Open
-
-    - Source: Worker1
-      Target: EventQueue
+    - Source: ALB
+      SourcePosition: NNE
+      Target: VPCPublicSubnet2Instance
+      TargetPosition: SSW
       TargetArrowHead:
         Type: Open
-
-    - Source: EventQueue
-      Target: LambdaProc1
+    - Source: IGW
+      SourcePosition: N
+      Target: ALB
+      TargetPosition: S
       TargetArrowHead:
         Type: Open
-
-    - Source: LambdaProc1
-      Target: EventsStore
-      TargetArrowHead:
-        Type: Open
-
-    - Source: LambdaProc1
-      Target: AnalyticsDW
+    - Source: User
+      SourcePosition: N
+      Target: IGW
+      TargetPosition: S
       TargetArrowHead:
         Type: Open
