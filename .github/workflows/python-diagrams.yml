@@ -1,4 +1,4 @@
-name: Generate Diagram using Python Diagrams
+name: Generate Python Diagrams
 
 on:
   workflow_dispatch:
