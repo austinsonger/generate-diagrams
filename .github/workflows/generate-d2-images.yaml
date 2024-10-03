@@ -43,6 +43,10 @@ jobs:
         with:
           submodules: 'true'
 
+      # Ensure the script has execute permissions
+      - name: Set execute permission for ci_bootstrap.sh
+        run: chmod +x setup/ci_bootstrap.sh
+
       - name: Bootstrap
         run: setup/ci_bootstrap.sh
 
