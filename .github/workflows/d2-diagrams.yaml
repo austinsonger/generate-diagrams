@@ -24,18 +24,16 @@ jobs:
        git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
        git config --global user.email "actions@github.com"
 
-    - name: Set up Go environment
-      uses: actions/setup-go@v4
-      with:
-        go-version: '1.23'
-
     - name: Install D2 CLI tool
       run: |
-        # Install D2 using Go (as per the installation guide in the D2 repo)
-        go install oss.terrastruct.com/d2@latest
+        # Download the latest D2 precompiled binary from GitHub releases
+        curl -L https://github.com/terrastruct/d2/releases/download/v0.6.7/d2-linux-amd64.tar.gz -o d2.tar.gz
         
-        # Ensure D2 binary is available in PATH
-        echo "$HOME/go/bin" >> $GITHUB_PATH
+        # Extract the D2 binary
+        tar -xzf d2.tar.gz
+        
+        # Move the binary to /usr/local/bin to make it available in the PATH
+        sudo mv d2 /usr/local/bin/d2
 
     - name: Create output directory
       run: mkdir -p output/d2-diagrams/
