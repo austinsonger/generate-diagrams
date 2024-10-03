@@ -2,12 +2,11 @@
 #                              P r e - C o m m i t
 # ============================================================================ #
 fail_fast: false
-#exclude: *.tmp$
+
 
 repos:
 
-    # will accept anything that 'git clone' understands
-    # this means you can set this to a local git repo to develop your own hook repos interactively
+
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.6.0
     hooks:

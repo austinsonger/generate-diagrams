@@ -39,11 +39,11 @@ retry(){
 
 if [ "$(uname -s)" = Darwin ]; then
     echo "Bootstrapping Mac"
-    #retry "$srcdir/../install/install_homebrew.sh"
+
     if command -v brew 2>&1; then
         for git_root in /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core /usr/local/Homebrew/Library/Taps/homebrew/homebrew-cask; do
             if [ -d "$git_root" ]; then
-                # find out if Homebrew is a shallow git checkout and if so fix it
+
                 if [ -f "$(git -C "$git_root" rev-parse --git-dir)/shallow" ] ||
                    [ "$(git -C "$git_root" rev-parse --is-shallow-repository)" = true ]; then
                     git -C "$git_root" fetch --unshallow
@@ -61,7 +61,7 @@ elif [ "$(uname -s)" = Linux ]; then
         retry $sudo apt-get update -q
         retry $sudo apt-get install -qy git make
     elif type yum >/dev/null 2>&1; then
-        #retry $sudo yum makecache
+
         retry $sudo yum install -qy git make
     else
         echo "Package Manager not found on Linux, cannot bootstrap"

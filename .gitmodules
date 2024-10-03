@@ -1,6 +1,6 @@
 [submodule "templates"]
 	path = templates
-	url = https://github.com/HariSekhon/Templates
+	url = https://github.com/austinsonger/base-templates
 [submodule "bash-tools"]
 	path = bash-tools
-	url = https://github.com/HariSekhon/DevOps-Bash-tools
+	url = https://github.com/austinsonger/DevOps-Bash-tools
