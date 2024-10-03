@@ -56,9 +56,11 @@ jobs:
       run: |        
         # Generate current date and time in YYYY-MM-DD-HH-MM-SS format
         timestamp=$(date +"%Y-%m-%d-%H-%M-%S")
+
+        mkdir -p output/aws-diagram-as-code/
     
         # Run the awsdac tool to generate a diagram from the YAML file
-        $HOME/go/bin/awsdac aws-diagram-as-code.yaml -o output/generated-diagram.png
+        $HOME/go/bin/awsdac aws-diagram-as-code.yaml -o output/aws-diagram-as-code/generated-diagram-$timestamp.png
    
     - name: List generated files (for debugging)
       run: ls -al output/
