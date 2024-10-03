@@ -58,15 +58,6 @@ jobs:
       - name: D2 fmt
         run: make fmt
 
-#      - name: Check diff
-#        run: |
-#          if ! git diff --quiet; then
-#            echo "There are formatting changes:"
-#            echo
-#            git diff
-#            exit 1
-#          fi
-
       - name: Check for formatting changes
         run: |
           if ! git diff --quiet; then
