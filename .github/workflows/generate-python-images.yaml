@@ -3,13 +3,13 @@
 name: Generate Python Images
 
 on:
-#  push:
-#    branches:
-#      - master
-#      - main
-#    paths:
-#      - '*.py'
-#      - .github/workflows/generate-python-images.yaml  # this workflow
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '*.py'
+      - .github/workflows/generate-python-images.yaml  # this workflow
 
   workflow_dispatch:
     inputs:
