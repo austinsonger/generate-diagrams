@@ -48,6 +48,7 @@ jobs:
        git add .
        git commit --verbose -m "${{ env.CI_COMMIT_MESSAGE }}"
        git status
+       git fetch origin
        git push --verbose       
        git rebase --strategy-option=theirs origin/main --verbose
 
