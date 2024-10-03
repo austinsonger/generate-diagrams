@@ -152,16 +152,30 @@ clean:
 
 .PHONY: fmt
 fmt: init
+	# Format all .d2 files
 	d2 fmt *.d2 # custom/*.d2
 	sleep 1
+	
+	# Check for macOS (Darwin) and set sed to gsed if needed
 	if uname -s | grep Darwin; then \
 		sed(){ gsed "$$@"; }; \
-	fi; \
-	sed -i 's|# !/|#!/|' *.d2 custom/*.d2 templates/*.d2
+	fi;
+	
+	# Only run sed on directories if they exist
+	if [ -d "custom" ]; then \
+		sed -i 's|# !/|#!/|' custom/*.d2; \
+	fi;
+	if [ -d "templates" ]; then \
+		sed -i 's|# !/|#!/|' templates/*.d2; \
+	fi;
+	sed -i 's|# !/|#!/|' *.d2;
 
+	# Safely handle git checkout in existing directories
 	for directory in . templates; do \
-		pushd "$$directory" && \
-		git checkout $$(git status --porcelain | awk '/^.T/{print $$2}') && \
-		popd || \
-		exit 1; \
+		if [ -d "$$directory" ]; then \
+			pushd "$$directory" && \
+			git checkout $$(git status --porcelain | awk '/^.T/{print $$2}') && \
+			popd || \
+			exit 1; \
+		fi; \
 	done
