@@ -152,7 +152,7 @@ clean:
 
 .PHONY: fmt
 fmt: init
-	d2 fmt *.d2 custom/*.d2
+	d2 fmt *.d2 # custom/*.d2
 	sleep 1
 	if uname -s | grep Darwin; then \
 		sed(){ gsed "$$@"; }; \
