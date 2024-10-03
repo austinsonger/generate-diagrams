@@ -14,11 +14,11 @@
 name: Grype
 
 on:
-  push:
-    branches:
-      - main
-    paths-ignore:
-      - '**/*.md'
+#  push:
+#    branches:
+#      - main
+#    paths-ignore:
+#      - '**/*.md'
   pull_request:
     branches:
       - main
@@ -30,8 +30,7 @@ on:
         type: boolean
         required: false
         default: false
-  schedule:
-    - cron: '0 0 * * 1'
+
 
 permissions:
   actions: read
