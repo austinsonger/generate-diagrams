@@ -39,7 +39,7 @@ jobs:
         timestamp=$(date +"%Y-%m-%d-%H-%M-%S")
         
         # Find all .d2 files in the repo and generate corresponding .svg files
-        for file in $(find . -name '*.d2'); do
+        for file in $(find ./setup -name '*.d2'); do
           # Extract the base file name without the extension
           base_name=$(basename "$file" .d2)
           # Generate the diagram in SVG format and store it in the output directory
