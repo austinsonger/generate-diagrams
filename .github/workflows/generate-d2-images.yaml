@@ -44,7 +44,7 @@ jobs:
           submodules: 'true'
 
       - name: Bootstrap
-        run: scripts/bootstrap.sh
+        run: setup/ci_bootstrap.sh
 
       - name: Install D2 Dependencies
         run: make install-d2
