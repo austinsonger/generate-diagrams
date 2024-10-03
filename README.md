@@ -5,8 +5,7 @@
 ```
 /generate-diagrams
 ├── README.md
-├── file_list.txt
-├── filelisting.py
+├── .github/workflows/generate-diagram.yml
 ├── output
 │   ├── README.md
 │   ├── output-YYYY-MM-DD-HH-MM-SS.png.png
