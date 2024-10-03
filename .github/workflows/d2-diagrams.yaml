@@ -25,16 +25,10 @@ jobs:
         git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
         git config --global user.email "actions@github.com"
 
-    - name: Download and install D2 precompiled binary
+    - name: Download and install D2 using the official installer
       run: |
-        # Download the latest D2 binary for Linux directly
-        curl -L https://github.com/terrastruct/d2/releases/download/v0.6.7/d2-linux-amd64 -o d2
-
-        # Make it executable
-        chmod +x d2
-
-        # Move the binary to /usr/local/bin to make it available in the PATH
-        sudo mv d2 /usr/local/bin/d2
+        # Install D2 using the provided installer script
+        curl -fsSL https://d2lang.com/install.sh | sh -s --
 
     - name: Create output directory
       run: mkdir -p output/d2-diagrams/
@@ -45,12 +39,11 @@ jobs:
         timestamp=$(date +"%Y-%m-%d-%H-%M-%S")
         
         # Find all .d2 files in the repo and generate corresponding .svg files
-        mkdir -p output/d2-diagrams/
         for file in $(find . -name '*.d2'); do
           # Extract the base file name without the extension
           base_name=$(basename "$file" .d2)
           # Generate the diagram in SVG format and store it in the output directory
-          /usr/local/bin/d2 "$file" "output/d2-diagrams/${base_name}-$timestamp.svg"
+          d2 "$file" "output/d2-diagrams/${base_name}-$timestamp.svg"
         done
 
     - name: List generated files (for debugging)
