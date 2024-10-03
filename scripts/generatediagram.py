@@ -1,7 +1,7 @@
 from diagrams import Diagram, Cluster
 from diagrams.aws.compute import EC2
 from diagrams.aws.network import ELB
-from diagrams.aws.network import VPC, PrivateSubnet, PublicSubnet
+from diagrams.aws.network import VPC, PrivateSubnet, PublicSubnet, NetworkFirewall
 from diagrams.aws.security import Shield, WAF
 from diagrams.generic.network import Subnet
 from diagrams.onprem.client import Users
@@ -49,8 +49,8 @@ with Diagram("FedRAMP ABD Component Shell", show=False, filename=output_file):
 
             # Second security boundary (inner shell)
             with Cluster("Security Boundary 2"):
-                # Replace Firewall with Security Group or another valid network resource
-                internal_firewall = SecurityGroup("Internal Security Group")
+                # Using NetworkFirewall as a firewall-like security component
+                internal_firewall = NetworkFirewall("Internal Firewall")
                 storage_instance = EC2("Storage Server")
                 api_instance = EC2("API Server")
 
