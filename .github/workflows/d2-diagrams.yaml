@@ -57,7 +57,7 @@ jobs:
     - name: Commit and Push generated diagrams to repository
       run: |
         git commit --verbose -a -m "${{ env.CI_COMMIT_MESSAGE }}" || echo "No changes to commit"
-        git push origin main --force --verbose
+        git push origin ${{ github.ref_name }} --force --verbose
 
     - name: Upload generated diagrams as artifact
       uses: actions/upload-artifact@v3

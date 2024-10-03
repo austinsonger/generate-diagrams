@@ -54,7 +54,7 @@ jobs:
     - name: Commit changes & Push to origin/main
       run: |
         git commit --verbose -a -m "${{ env.CI_COMMIT_MESSAGE }}" || echo "No changes to commit"
-        git push origin main --force --verbose
+        git push origin ${{ github.ref_name }} --force --verbose
 
     - name: Push changes
       uses: ad-m/github-push-action@master
