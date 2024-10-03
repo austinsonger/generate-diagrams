@@ -1,3 +1,0 @@
-curl
-graphviz
-python3-setuptools

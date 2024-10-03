@@ -1,2 +1,0 @@
-graphviz
-python3-dev
