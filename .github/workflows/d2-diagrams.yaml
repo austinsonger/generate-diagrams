@@ -1,0 +1,70 @@
+name: Generate Diagrams using D2
+
+on:
+  workflow_dispatch:
+
+jobs:
+  generate-diagram:
+    runs-on: ubuntu-latest
+    permissions:                
+     contents: write          
+     pull-requests: write      
+    env: 
+      CI_COMMIT_MESSAGE: Update generated diagrams with D2
+      CI_COMMIT_AUTHOR: D2 Diagram Creator
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0 
+        token: ${{ secrets.GITHUB_TOKEN }} 
+
+    - name: Git Global Config
+      run: |
+       git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
+       git config --global user.email "actions@github.com"
+
+    - name: Set up Go environment
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.21'
+
+    - name: Install D2 CLI tool
+      run: |
+        # Install D2 using Go (as per the installation guide in the D2 repo)
+        go install oss.terrastruct.com/d2@latest
+        
+        # Ensure D2 binary is available in PATH
+        echo "$HOME/go/bin" >> $GITHUB_PATH
+
+    - name: Create output directory
+      run: mkdir -p output/d2-diagrams/
+
+    - name: Generate Diagrams with D2
+      run: |
+        timestamp=$(date +"%Y-%m-%d-%H-%M-%S")
+        # Find all .d2 files in the repo and generate corresponding .svg or .png files
+        for file in $(find . -name '*.d2'); do
+          # Extract the base file name without the extension
+          base_name=$(basename "$file" .d2)
+          # Generate the diagram in SVG format and store it in the output directory
+          $HOME/go/bin/d2 "$file" "output/d2-diagrams/${base_name}-$timestamp.svg"
+        done
+
+    - name: List generated files (for debugging)
+      run: ls -al output/d2-diagrams/
+
+    - name: Add output files & Status
+      run: git add output/
+           git status
+
+    - name: Commit and Push generated diagrams to repository
+      run: |
+        git commit --verbose -a -m "${{ env.CI_COMMIT_MESSAGE }}" || echo "No changes to commit"
+        git push origin main --force --verbose
+
+    - name: Upload generated diagrams as artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: generated-diagrams
+        path: output/d2-diagrams/
