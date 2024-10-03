@@ -105,11 +105,22 @@ install-d2:
 	fi
 	curl -fsSL https://d2lang.com/install.sh | sh -s --
 
+.PHONY: python-version
+python-version:
+	@echo "Checking Python version..."
+	@if ! python3 --version >/dev/null 2>&1; then \
+		echo "Python 3 is not installed. Exiting..."; \
+		exit 1; \
+	else \
+		python3 --version; \
+	fi
+
 .PHONY: install-python
 install-python:
 	@echo ==============
 	@echo Install Python
 	@echo ==============
+        @$(MAKE) python-version
 
 	if [ -z "$(CPANM)" ]; then make; exit $$?; fi
 	$(MAKE) system-packages-python
