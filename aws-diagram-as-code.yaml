@@ -1,0 +1,109 @@
+Diagram:
+  DefinitionFiles:
+    - Type: URL
+      Url: "https://raw.githubusercontent.com/awslabs/diagram-as-code/main/definitions/definition-for-aws-icons-light.yaml"
+  
+  Resources:
+    Canvas:
+      Type: AWS::Diagram::Canvas
+      Direction: vertical
+      Children:
+        - EventSource
+        - EventFlows
+
+    # Event Source (EKS)
+    EventSource:
+      Type: AWS::EKS::Cluster
+      Preset: Kubernetes Cluster
+
+    # Event Flows Cluster
+    EventFlows:
+      Type: AWS::Diagram::ResourceGroup
+      Direction: vertical
+      Children:
+        - EventWorkers
+        - EventQueue
+        - Processing
+
+    # Event Workers (ECS Cluster)
+    EventWorkers:
+      Type: AWS::Diagram::Cluster
+      Preset: ResourceGroup
+      Children:
+        - Worker1
+        - Worker2
+        - Worker3
+
+    Worker1:
+      Type: AWS::ECS::Service
+      Preset: ECS Container Service
+
+    Worker2:
+      Type: AWS::ECS::Service
+      Preset: ECS Container Service
+
+    Worker3:
+      Type: AWS::ECS::Service
+      Preset: ECS Container Service
+
+    # Event Queue (SQS)
+    EventQueue:
+      Type: AWS::SQS::Queue
+      Preset: SQS Queue
+
+    # Processing (Lambda Handlers)
+    Processing:
+      Type: AWS::Diagram::ResourceGroup
+      Direction: vertical
+      Children:
+        - LambdaProc1
+        - LambdaProc2
+        - LambdaProc3
+
+    LambdaProc1:
+      Type: AWS::Lambda::Function
+      Preset: Lambda Function
+
+    LambdaProc2:
+      Type: AWS::Lambda::Function
+      Preset: Lambda Function
+
+    LambdaProc3:
+      Type: AWS::Lambda::Function
+      Preset: Lambda Function
+
+    # Storage (S3 and Redshift)
+    EventsStore:
+      Type: AWS::S3::Bucket
+      Preset: S3 Bucket
+
+    AnalyticsDW:
+      Type: AWS::Redshift::Cluster
+      Preset: Redshift Cluster
+
+  Links:
+    # Define connections in the architecture
+    - Source: EventSource
+      Target: Worker1
+      TargetArrowHead:
+        Type: Open
+
+    - Source: Worker1
+      Target: EventQueue
+      TargetArrowHead:
+        Type: Open
+
+    - Source: EventQueue
+      Target: LambdaProc1
+      TargetArrowHead:
+        Type: Open
+
+    - Source: LambdaProc1
+      Target: EventsStore
+      TargetArrowHead:
+        Type: Open
+
+    - Source: LambdaProc1
+      Target: AnalyticsDW
+      TargetArrowHead:
+        Type: Open
