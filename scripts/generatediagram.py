@@ -50,7 +50,8 @@ with Diagram("FedRAMP ABD Component Shell", show=False, filename=output_file):
 
             # Second security boundary (inner shell)
             with Cluster("Security Boundary 2"):
-                internal_firewall = Firewall("Internal Firewall")
+                # Replace Firewall with Security Group or another valid network resource
+                internal_firewall = SecurityGroup("Internal Security Group")
                 storage_instance = EC2("Storage Server")
                 api_instance = EC2("API Server")
 
