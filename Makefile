@@ -120,7 +120,7 @@ install-python:
 	@echo ==============
 	@echo Install Python
 	@echo ==============
-        @$(MAKE) python-version
+	@$(MAKE) python-version
 
 	if [ -z "$(CPANM)" ]; then make; exit $$?; fi
 	$(MAKE) system-packages-python
