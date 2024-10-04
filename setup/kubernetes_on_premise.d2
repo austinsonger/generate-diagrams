@@ -3,7 +3,8 @@
 #                  K u b e r n e t e s   O n - p r e m i s e
 # ============================================================================ #
 
-direction: down
+# Explicitly set the layout direction or change to a grid
+direction: right
 
 title: {
   label: Kubernetes On-Premise
@@ -13,46 +14,44 @@ title: {
   style.underline: true
 }
 
+# Define classes for reusable node styles
 classes: {
   dns: {
     label: DNS
     icon: https://icons.terrastruct.com/gcp%2FProducts%20and%20services%2FNetworking%2FCloud%20DNS.svg
     shape: image
+    style.icon-size: 60
   }
   network: {
-    # icon: https://icons.terrastruct.com/essentials%2F092-network.svg
-    # icon: https://diagrams.mingrammer.com/img/resources/onprem/network/haproxy.png
     icon: https://diagrams.mingrammer.com/img/resources/gcp/network/routes.png
     shape: image
+    style.icon-size: 60
   }
   storage: {
     label: "HA Networked Storage\nfor Kubernetes\nPersistent Volumes"
     icon: https://icons.terrastruct.com/azure%2FStorage%20Service%20Color%2FGeneral%20Storage.svg
     shape: image
+    style.icon-size: 60
   }
   load_balancer: {
     label: "HA Load Balancer\n(HAProxy / Nginx / Traefik / Kong)"
-    # there isn't a good generic load balancer icon so using this for now - switch to one of the product specific icons if you know which one
-    # icon: https://diagrams.mingrammer.com/img/resources/aws/network/elastic-load-balancing.png
     icon: https://diagrams.mingrammer.com/img/resources/onprem/network/haproxy.png
-    # icon: https://diagrams.mingrammer.com/img/resources/onprem/network/kong.png
-    # icon: https://diagrams.mingrammer.com/img/resources/onprem/network/traefik.png
-    # icon: https://landscape.cncf.io/logos/metal-lb.svg
     shape: image
+    style.icon-size: 60
   }
   k8s: {
     icon: https://icons.terrastruct.com/azure%2F_Companies%2FKubernetes.svg
     shape: image
-  }
-  k8s_ingress: {
-    icon: https://diagrams.mingrammer.com/img/resources/k8s/network/ing.png
-    shape: image
+    style.icon-size: 60
   }
   server: {
     icon: https://icons.terrastruct.com/essentials%2F112-server.svg
+    shape: image
+    style.icon-size: 60
   }
 }
 
+# Define users, DNS, and network connections
 users -> DNS -> user_network
 DNS.class: dns
 
@@ -63,51 +62,50 @@ users: Users {
 
 user_network: Network {class: network}
 
+# Use columns to align the load balancers
+group: {
+  label: Load Balancers
+  direction: down
+
+  lb1: {class: load_balancer}
+  lb2: {class: load_balancer}
+}
+
 user_network -> lb1
 user_network -> lb2
-
-lb1: {class: load_balancer}
-lb2: {class: load_balancer}
 
 lb1 -> network
 lb2 -> network
 
 network: Network {
   class: network
-  # style.opacity: 0
 }
 
-network -> Server 1
-network -> Server 2
-network -> Server 3
+# Servers with Kubernetes nodes grouped in a column
+group {
+  label: Servers and Kubernetes
+  direction: down
 
-Server 1: {
-  class: server
-  kube1: Kubernetes 1 {class: k8s}
+  Server 1: {
+    class: server
+    kube1: Kubernetes 1 {class: k8s}
+  }
+  Server 2: {
+    class: server
+    kube2: Kubernetes 2 {class: k8s}
+  }
+  Server 3: {
+    class: server
+    kube3: Kubernetes 3 {class: k8s}
+  }
 }
-Server 2: {
-  class: server
-  kube2: Kubernetes 2 {class: k8s}
-}
-Server 3: {
-  class: server
-  kube3: Kubernetes 3 {class: k8s}
-}
 
-# Server 1 -- Server 2 -- Server 3: VRRP {style.stroke-dash: 5}
-# Server 2 -- Server 3: VRRP {style.stroke-dash: 5}
-
-# keepalived1: KeepAlive 1
-# keepalived2: KeepAlive 2
-
-# lb1 -- keepalived1 -- keepalived2 -- lb2
-
+# Storage setup
 Server 1 -> storage_network
 Server 2 -> storage_network
 Server 3 -> storage_network
 
 storage_network: Network {class: network}
 
-storage_network -> storage
-
 storage: {class: storage}
+storage_network -> storage
