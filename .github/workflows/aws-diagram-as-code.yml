@@ -48,7 +48,7 @@ jobs:
 
     - name: Add output files & Status
       run: |
-        git add output/
+        git add output/aws-diagram-as-code
         git status
 
     - name: Commit changes & Push to origin/main
