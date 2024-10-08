@@ -1,4 +1,5 @@
 # Generate Diagrams in Github Action
+<!--
 
 - [Directory Structure](#idirectory-structure)
 - [Script](#script)
@@ -70,4 +71,4 @@ print(f"Diagram saved as {output_file}")
 
 
 
-
+-->
